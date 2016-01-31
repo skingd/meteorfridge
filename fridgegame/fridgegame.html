@@ -1,5 +1,6 @@
 <head>
   <title>fridgegame</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>
 
 <body>
@@ -18,13 +19,27 @@
 </template>
 
 <template name="fridge">
-
 	<div id="fridge">
 	<img class="image-responsive" src="/empty-fridge.jpg"/>
-	</div>
+    <ul>
+        {{#each products}}
+            <li>{{> productListItem}}</li>
+        {{/each}}
+    </ul>
+    </div>
 </template>
 
 <template name="productList">
 <div id="supermarket" class="box">
+    <ul id="products">
+        {{#each products}}
+            <li>{{> productListItem}}</li>
+        {{/each}}
+    </ul>
 </div>
 </template>
+
+<template name="productListItem">
+    <img src="{{img}}" data-id="{{_id}}" class="image-responsive produce-image draggable" />
+</template>
+

@@ -1,23 +1,67 @@
-if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+Products = new Mongo.Collection('products');
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
+if (Meteor.isClient) {
+
+  Template.fridge.helpers({
+      products: function(){
+        return Products.find({
+          place: 'fridge'
+        });
+      }
+  });
+
+  Template.productList.helpers({
+    products: function(){
+      return Products.find({
+        place: 'supermarket'
+      });
     }
   });
 
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
-    }
+  Template.fridge.onRendered(function(){
+    var templateInstance = this;
+    templateInstance.$('#fridge').droppable({
+      drop: function(evt, ui){
+
+        //create query
+        var query = { _id: ui.draggable.data('id')};
+
+        //assign data to query
+        var changes = { $set: {place: 'fridge'}};
+
+        //execute query
+        Products.update(query, changes);
+      }
+    });
+  });
+
+  Template.productListItem.onRendered(function(){
+    var templateInstance = this;
+
+    templateInstance.$('draggable').draggable({
+      cursor: 'move',
+      helper: 'clone'
+    });
   });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
+    //Remove products from database
+    Products.remove({});
+
+    //Fill the database with products
+    Products.insert({
+      name: 'Milk',
+      img: '/milk.png',
+      place: 'fridge'
+    });
+
+    Products.insert({
+      name: 'Bread',
+      img: '/bread.png',
+      place: 'supermarket'
+    });
+
   });
 }
