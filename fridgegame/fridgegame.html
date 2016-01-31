@@ -1,0 +1,30 @@
+<head>
+  <title>fridgegame</title>
+</head>
+
+<body>
+  {{> container}}
+</body>
+
+<template name="container">
+	<div class="container">
+	<div class="left">
+	{{> fridge}}
+		</div>
+			<div class="right">
+			{{> productList}}
+		</div>
+	</div>
+</template>
+
+<template name="fridge">
+
+	<div id="fridge">
+	<img class="image-responsive" src="/empty-fridge.jpg"/>
+	</div>
+</template>
+
+<template name="productList">
+<div id="supermarket" class="box">
+</div>
+</template>
